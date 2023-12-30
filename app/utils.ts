@@ -16,3 +16,12 @@ export const residentRowsToApartmentConfig = (rows: ResidentRow[]): ApartmentCon
 
   return config;
 }
+
+export const groupResidentsRowsByFloor = (rows: ResidentRow[]) => {
+  return rows.reduce((acc, resident) => {
+    const { floor_number } = resident;
+    acc[floor_number] = acc[floor_number] || [];
+    acc[floor_number].push(resident);
+    return acc;
+  }, {} as Record<number, ResidentRow[]>);
+}

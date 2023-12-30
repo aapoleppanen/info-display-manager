@@ -13,10 +13,12 @@ type Props = {
 };
 
 const Config = ({ residents }: Props) => {
-  const [localResidents, setLocalResidents] = useState<ResidentRow[]>(residents); // [ResidentRow
+  const [localResidents, setLocalResidents] =
+    useState<ResidentRow[]>(residents); // [ResidentRow
   const [deleteModalId, setDeleteModalId] = useState<number | null>(null);
 
   const addResident = async (resident: ResidentInfo) => {
+    setLocalResidents([...localResidents, { ...resident, id: -1 }]);
     // GET /api/add-resident with search params
     const url = new URL("/api/add-resident", window.location.href);
     url.searchParams.append("floorNumber", resident.floor_number.toString());
@@ -28,17 +30,30 @@ const Config = ({ residents }: Props) => {
 
     if (data.error) {
       console.error(data.error);
-    } {
-      setLocalResidents([...localResidents, { ...resident, id: -1 }]);
+      setLocalResidents(localResidents.slice(0, localResidents.length - 1));
     }
   };
 
-  const editResident = async (resident: Partial<ResidentRow> & { id: number }) => {
+  const editResident = async (
+    resident: Partial<ResidentRow> & { id: number }
+  ) => {
+    const oldResident = localResidents.find((r) => r.id === resident.id);
+    const newResidents = localResidents.map((r) => {
+      if (r.id === resident.id) {
+        return { ...r, ...resident };
+      }
+      return r;
+    });
+    setLocalResidents(newResidents);
+
     // GET /api/edit-resident with search params
     const url = new URL("/api/edit-resident", window.location.href);
-    if (resident.floor_number) url.searchParams.append("floorNumber", resident.floor_number.toString());
-    if (resident.house_number) url.searchParams.append("houseNumber", resident.house_number);
-    if (resident.resident_name) url.searchParams.append("residentName", resident.resident_name);
+    if (resident.floor_number)
+      url.searchParams.append("floorNumber", resident.floor_number.toString());
+    if (resident.house_number)
+      url.searchParams.append("houseNumber", resident.house_number);
+    if (resident.resident_name)
+      url.searchParams.append("residentName", resident.resident_name);
     url.searchParams.append("id", resident.id.toString());
 
     const response = await fetch(url.href);
@@ -46,18 +61,21 @@ const Config = ({ residents }: Props) => {
 
     if (data.error) {
       console.error(data.error);
-    } else {
-      const newResidents = localResidents.map((r) => {
-        if (r.id === resident.id) {
-          return { ...r, ...resident };
-        }
-        return r;
-      });
-      setLocalResidents(newResidents);
+      setLocalResidents(
+        localResidents.map((r) => {
+          if (r.id === resident.id) {
+            return oldResident!;
+          }
+          return r;
+        })
+      );
     }
   };
 
   const deleteResident = async (id: number) => {
+    const deletedResident = localResidents.find((r) => r.id === id);
+    const newResidents = localResidents.filter((r) => r.id !== id);
+    setLocalResidents(newResidents);
     // GET /api/delete-resident with search params
     const url = new URL("/api/delete-resident", window.location.href);
     url.searchParams.append("id", id.toString());
@@ -66,44 +84,38 @@ const Config = ({ residents }: Props) => {
     const data = await response.json();
     if (data.error) {
       console.error(data.error);
-    } else {
-      const newResidents = localResidents.filter((r) => r.id !== id);
-      setLocalResidents(newResidents);
+      setLocalResidents([...localResidents, deletedResident!]);
     }
   };
 
   return (
     <SimpleGrid cols={2} spacing="xs">
-    <Box p={5}>
-      <ResidentForm addResident={addResident} />
+      <Box p={5}>
+        <ResidentForm addResident={addResident} />
 
-      {localResidents.length === 0 && (
-        <Box mt={10} >
-          No residents found
-        </Box>
-      )}
+        {localResidents.length === 0 && <Box mt={10}>No residents found</Box>}
 
-      {localResidents.length > 0 && (
-        <ResidentList
-          residents={localResidents}
-          updateResident={editResident}
-          deleteResident={(id) => setDeleteModalId(id)}
+        {localResidents.length > 0 && (
+          <ResidentList
+            residents={localResidents}
+            updateResident={editResident}
+            deleteResident={(id) => setDeleteModalId(id)}
+          />
+        )}
+
+        <DeleteModal
+          isOpen={Boolean(deleteModalId)}
+          onDeleteConfirm={() => {
+            if (deleteModalId) {
+              deleteResident(deleteModalId);
+            }
+            setDeleteModalId(null);
+          }}
+          onCancel={() => setDeleteModalId(null)}
         />
-      )}
-
-      <DeleteModal
-        isOpen={Boolean(deleteModalId)}
-        onDeleteConfirm={() => {
-          if (deleteModalId) {
-            deleteResident(deleteModalId);
-          }
-          setDeleteModalId(null);
-        }}
-        onCancel={() => setDeleteModalId(null)}
-      />
-    </Box>
-    <Preview residents={localResidents} />
-  </SimpleGrid>
+      </Box>
+      <Preview residents={localResidents} />
+    </SimpleGrid>
   );
 };
 
