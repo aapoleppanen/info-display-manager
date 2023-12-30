@@ -1,4 +1,5 @@
 import { sql } from '@vercel/postgres';
+import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
@@ -12,5 +13,6 @@ export async function GET(request: Request) {
     return NextResponse.json({ error }, { status: 500 });
   }
 
+  revalidatePath('/live');
   return NextResponse.json({ success: true }, { status: 200 });
 }
