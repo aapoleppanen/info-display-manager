@@ -77,7 +77,7 @@ const ResidentList: React.FC<Props> = ({
           <h3>Floor {floor}</h3>
           {residentsOnFloor.map((resident) => (
             <Group key={resident.id}>
-              {resident.id === editedResident.id ? (
+              {resident.id === editedResident.id && editedResident.id !== -1 ? (
                 <>
                   <TextInput
                     value={editedResident.house_number || ''}
