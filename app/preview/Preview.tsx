@@ -11,9 +11,14 @@ const Preview = ({ residents }: Props) => {
 
   return (
     <div className={PreviewClasses.container}>
+      <div className={PreviewClasses.apartmentDescription}>
+      AS OY TUSULAN <br/>
+      PÄÄVARTIO <br/>
+      Kaartilaisenpolku 4 A
+      </div>
       {Object.entries(config).map(([floor, residentInfo]) => (
         <div className={PreviewClasses.floorContainer} key={floor}>
-          <div>{floor}</div>
+          <div className={PreviewClasses.floorHeading}>{floor}</div>
           {residentInfo.map(({ resident_name, house_number }) => (
             <div className={PreviewClasses.residentInfo} key={house_number}>
               <div>{house_number}</div>

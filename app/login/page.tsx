@@ -1,26 +1,40 @@
 import { getPageSession } from "@/auth/lucia";
 import { redirect } from "next/navigation";
-
-import Link from "next/link";
+import { Container, TextInput, PasswordInput, Button, Title, Paper, Group } from '@mantine/core';
 import Form from "../_components/form";
 
 const Page = async () => {
-	const session = await getPageSession();
-	if (session) redirect("/");
-	return (
-		<>
-			<h1>Sign in</h1>
-			<Form action="/api/login">
-				<label htmlFor="username">Username</label>
-				<input name="username" id="username" />
-				<br />
-				<label htmlFor="password">Password</label>
-				<input type="password" name="password" id="password" />
-				<br />
-				<input type="submit" />
-			</Form>
-		</>
-	);
+    const session = await getPageSession();
+    if (session) redirect("/");
+    return (
+        <Container size="xs" p="lg">
+            <Paper p="lg" shadow="xs">
+                <Title order={2} m="lg">
+                    Sign in
+                </Title>
+                <Form action="/api/login">
+                    <TextInput
+                        label="Username"
+                        name="username"
+                        id="username"
+                        placeholder="Your username"
+                        required
+                    />
+                    <PasswordInput
+                        label="Password"
+                        name="password"
+                        id="password"
+                        placeholder="Your password"
+                        required
+                        mt="md"
+                    />
+                    <Group mt="md">
+                        <Button type="submit">Log in</Button>
+                    </Group>
+                </Form>
+            </Paper>
+        </Container>
+    );
 };
 
 export default Page;

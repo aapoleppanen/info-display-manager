@@ -6,8 +6,27 @@
   gap: 50px;
   height: 100vh;
   width: 100%;
-  background-color: #333333;
+  /* background-color: #333333; */
+  background: repeating-linear-gradient(
+    0deg,
+    #2a2a2a,
+    #2a2a2a 20px,
+    #222222 20px,
+    #222222 23px
+  );
   color: #ffffff;
+  font-size: 24px;
+}
+
+.apartmentDescription {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 350px;
+  text-align: left;
 }
 
 .floorContainer {
@@ -18,9 +37,14 @@
   width: 100%;
 }
 
+.floorHeading {
+  margin-bottom: 24px;
+}
+
 .residentInfo {
   display: flex;
   width: 70%;
   max-width: 350px;
   justify-content: space-between;
+  text-transform: uppercase;
 }

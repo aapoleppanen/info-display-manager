@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error }, { status: 500 });
   }
 
-  const residents = await sql`SELECT * FROM Residents;`;
+  const { rows: [resident] } = await sql`SELECT * FROM Residents WHERE resident_name = ${residentName} AND house_number = ${houseNumber} AND floor_number = ${floorNumber} AND apartment_id = ${apartmentId};`;
   revalidatePath('/live');
-  return NextResponse.json({ residents }, { status: 200 });
+  return NextResponse.json({ resident }, { status: 200 });
 }

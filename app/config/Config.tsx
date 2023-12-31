@@ -32,6 +32,9 @@ const Config = ({ residents }: Props) => {
       console.error(data.error);
       setLocalResidents(localResidents.slice(0, localResidents.length - 1));
     }
+
+    // TODO: fix this, bit hacky
+    setLocalResidents([...localResidents, data.resident]);
   };
 
   const editResident = async (
