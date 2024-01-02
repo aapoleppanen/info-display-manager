@@ -1,0 +1,8 @@
+.previewScaleWrapper {
+  height: 100vh;
+  overflow: scroll;
+  > :first-child {
+    height: auto;
+    padding: 25px 0;
+  }
+}

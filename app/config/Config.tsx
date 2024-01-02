@@ -8,6 +8,7 @@ import ResidentList from "../_components/ResidentList";
 import Preview from "../preview/Preview";
 import { ApartmentRow, ResidentInfo, ResidentRow } from "../types";
 import ApartmentConfig from "../_components/ApartmentConfig";
+import ConfigClasses from "./Config.module.css";
 
 type Props = {
   residents: ResidentRow[];
@@ -124,7 +125,9 @@ const Config = ({ residents, apartment }: Props) => {
           onCancel={() => setDeleteModalId(null)}
         />
       </Box>
+      <div className={ConfigClasses.previewScaleWrapper}>
       <Preview residents={localResidents} apartment={apartment} />
+      </div>
     </SimpleGrid>
   );
 };
