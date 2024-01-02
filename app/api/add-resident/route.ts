@@ -17,6 +17,6 @@ export async function GET(request: Request) {
   }
 
   const { rows: [resident] } = await sql`SELECT * FROM Residents WHERE resident_name = ${residentName} AND house_number = ${houseNumber} AND floor_number = ${floorNumber} AND apartment_id = ${apartmentId};`;
-  revalidatePath('/live');
+  revalidatePath(`/live/${apartmentId}`);
   return NextResponse.json({ resident }, { status: 200 });
 }

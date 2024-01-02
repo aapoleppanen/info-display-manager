@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const residentId = searchParams.get('id');
+  const apartmentId = searchParams.get('apartmentId');
 
   try {
     if (!residentId) throw new Error('Resident ID required');
@@ -13,6 +14,6 @@ export async function GET(request: Request) {
     return NextResponse.json({ error }, { status: 500 });
   }
 
-  revalidatePath('/live');
+  revalidatePath(`/live/${apartmentId}`);
   return NextResponse.json({ success: true }, { status: 200 });
 }

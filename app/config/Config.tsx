@@ -85,6 +85,7 @@ const Config = ({ residents, apartment }: Props) => {
     // GET /api/delete-resident with search params
     const url = new URL("/api/delete-resident", window.location.href);
     url.searchParams.append("id", id.toString());
+    url.searchParams.append("apartmentId", apartment.id.toString());
 
     const response = await fetch(url.href);
     const data = await response.json();

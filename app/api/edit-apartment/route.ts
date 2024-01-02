@@ -45,7 +45,7 @@ export async function GET(request: Request) {
   // fetch updated apartment
   const { rows: updatedApartments } =
     await sql`SELECT * FROM Apartments WHERE id = ${id};`;
-  revalidatePath("/live");
+  revalidatePath(`/live/${id}`);
 
   return NextResponse.json({ resident: updatedApartments[0] }, { status: 200 });
 }
