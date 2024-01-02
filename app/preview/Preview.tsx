@@ -5,13 +5,14 @@ import PreviewClasses from "./Preview.module.css";
 type Props = {
   residents: ResidentRow[];
   apartment: ApartmentRow;
+  rotate?: boolean;
 };
 
-const Preview = ({ apartment, residents }: Props) => {
+const Preview = ({ apartment, residents, rotate }: Props) => {
   const config = residentRowsToApartmentConfig(residents)
 
   return (
-    <div className={PreviewClasses.container}>
+    <div className={`${PreviewClasses.container} ${rotate ? PreviewClasses.rotate : ''}`}>
       <div className={PreviewClasses.apartmentDescription}>
       {apartment.description} <br />
       {apartment.description_line_2} <br />

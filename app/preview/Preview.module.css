@@ -19,6 +19,21 @@
   font-size: 24px;
 }
 
+.rotate {
+  /* counter-clockwise */
+  /* transform: rotate(-90deg) translateX(-100%);
+  transform-origin: top left;
+  width: 100vh;
+  height: 100vw; */
+  /* clockwise */
+  transform: rotate(90deg);
+  transform-origin: bottom left;
+  width: 100vh;
+  height: 100vw;
+  position: absolute;
+  top: -100vw
+}
+
 .apartmentDescription {
   display: flex;
   flex-direction: column;
