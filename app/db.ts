@@ -3,16 +3,16 @@ import { ApartmentRow, ResidentRow } from "./types";
 import { sql } from "@vercel/postgres";
 
 export const getResidents = cache(async (apartmentId?: string) => {
-  if (apartmentId) {
+  if (apartmentId && !isNaN(Number(apartmentId))) {
     const { rows: residents } = await sql<ResidentRow>`
-      SELECT * FROM residents WHERE apartment_id = ${apartmentId} ORDER BY floor_number, house_number DESC
+      SELECT * FROM residents WHERE apartment_id = ${apartmentId} ORDER BY floor_number, substring(house_number FROM '([0-9]+)')::int DESC
     `;
 
     return residents;
   }
 
   const { rows: residents } = await sql<ResidentRow>`
-    SELECT * FROM residents ORDER BY floor_number, house_number DESC
+    SELECT * FROM residents ORDER BY floor_number, substring(house_number FROM '([0-9]+)')::int DESC
   `;
 
   return residents;
