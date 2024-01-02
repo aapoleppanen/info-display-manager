@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import { Group, Button, TextInput, Divider, NumberInput } from "@mantine/core";
+import {
+  Button,
+  TextInput,
+  Divider,
+  NumberInput,
+  Flex,
+  Box,
+} from "@mantine/core";
 import { ResidentRow } from "../types";
 import { groupResidentsRowsByFloor } from "../utils";
+import CssClasses from "./Components.module.css";
 
 type Props = {
   residents: ResidentRow[];
@@ -76,11 +84,18 @@ const ResidentList: React.FC<Props> = ({
         <div key={floor}>
           <h3>Floor {floor}</h3>
           {residentsOnFloor.map((resident) => (
-            <Group key={resident.id}>
+            <Flex
+              direction={{ base: "column", sm: "row" }}
+              align={{ sm: "center", md: "end" }}
+              justify={{ md: "start" }}
+              gap="xs"
+              key={resident.id}
+              mb={{ base: 25, sm: 10 }}
+            >
               {resident.id === editedResident.id && editedResident.id !== -1 ? (
                 <>
                   <TextInput
-                    value={editedResident.house_number || ''}
+                    value={editedResident.house_number || ""}
                     onChange={(e) =>
                       setEditedResident({
                         ...editedResident,
@@ -93,7 +108,7 @@ const ResidentList: React.FC<Props> = ({
                     error={errors.houseNumber}
                   />
                   <TextInput
-                    value={editedResident.resident_name || ''}
+                    value={editedResident.resident_name || ""}
                     onChange={(e) =>
                       setEditedResident({
                         ...editedResident,
@@ -120,7 +135,11 @@ const ResidentList: React.FC<Props> = ({
                     min={1}
                     allowDecimal={false}
                   />
-                  <Button size="xs" onClick={saveEdit}>
+                  <Button
+                    size="xs"
+                    onClick={saveEdit}
+                    className={CssClasses.residentListButton}
+                  >
                     Save
                   </Button>
                   <Button size="xs" onClick={cancelEdit}>
@@ -129,8 +148,14 @@ const ResidentList: React.FC<Props> = ({
                 </>
               ) : (
                 <>
-                  <span>{`House Number: ${resident.house_number}, Resident: ${resident.resident_name}`}</span>
-                  <Button size="xs" onClick={() => startEdit(resident)}>
+                  <Box>
+                    {`House Number: ${resident.house_number}, Resident: ${resident.resident_name}`}
+                  </Box>
+                  <Button
+                    size="xs"
+                    onClick={() => startEdit(resident)}
+                    className={CssClasses.residentListButton}
+                  >
                     Edit
                   </Button>
                   <Button
@@ -142,7 +167,7 @@ const ResidentList: React.FC<Props> = ({
                   </Button>
                 </>
               )}
-            </Group>
+            </Flex>
           ))}
           <Divider />
         </div>

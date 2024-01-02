@@ -1,16 +1,23 @@
-import { getPageSession } from '@/auth/lucia';
-import { Stack } from '@mantine/core';
-import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { getPageSession } from "@/auth/lucia";
+import { Container, Paper, Stack, Title } from "@mantine/core";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const session = await getPageSession();
-	if (!session) redirect("/login");
+  if (!session) redirect("/login");
 
   return (
-    <Stack>
-      <Link href="/1">Apartment 1</Link>
-      <Link href="/2">Apartment 2</Link>
-      </Stack>
+    <Container size="xs" p="lg">
+      <Paper p="lg" shadow="xs">
+        <Title order={2} mb="lg">
+          Apartments
+        </Title>
+        <Stack>
+          <Link href="/1">Kaartilaisenpolku 4 A</Link>
+          <Link href="/2">Kaartilaisenpolku 4 B</Link>
+        </Stack>
+      </Paper>
+    </Container>
   );
 }

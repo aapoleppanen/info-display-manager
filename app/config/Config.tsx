@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, SimpleGrid } from "@mantine/core";
+import { Box, SimpleGrid, em } from "@mantine/core";
 import { useState } from "react";
 import DeleteModal from "../_components/DeleteModal";
 import ResidentForm from "../_components/ResidentForm";
@@ -9,6 +9,9 @@ import Preview from "../preview/Preview";
 import { ApartmentRow, ResidentInfo, ResidentRow } from "../types";
 import ApartmentConfig from "../_components/ApartmentConfig";
 import ConfigClasses from "./Config.module.css";
+import { useMediaQuery } from "@mantine/hooks";
+import FloatingButton from "../_components/FloatingButton";
+import { IconEye, IconSettings } from "@tabler/icons-react";
 
 type Props = {
   residents: ResidentRow[];
@@ -16,6 +19,9 @@ type Props = {
 };
 
 const Config = ({ residents, apartment }: Props) => {
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
+  const [isPreviewVisible, setIsPreviewVisible] = useState(false);
+
   const [localResidents, setLocalResidents] =
     useState<ResidentRow[]>(residents); // [ResidentRow
   const [deleteModalId, setDeleteModalId] = useState<number | null>(null);
@@ -96,6 +102,51 @@ const Config = ({ residents, apartment }: Props) => {
     }
   };
 
+  if (isMobile) {
+    return (
+      <>
+        {isPreviewVisible ? (
+          <div className={ConfigClasses.previewScaleWrapper}>
+            <Preview residents={localResidents} apartment={apartment} />
+          </div>
+        ) : (
+          <Box p={5} style={{ overflowY: "scroll", height: "100vh" }}>
+            <ApartmentConfig apartment={apartment} />
+
+            <h3>Add residents</h3>
+            <ResidentForm addResident={addResident} />
+
+            {localResidents.length === 0 && (
+              <Box mt={10}>No residents found</Box>
+            )}
+
+            {localResidents.length > 0 && (
+              <ResidentList
+                residents={localResidents}
+                updateResident={editResident}
+                deleteResident={(id) => setDeleteModalId(id)}
+              />
+            )}
+
+            <DeleteModal
+              isOpen={Boolean(deleteModalId)}
+              onDeleteConfirm={() => {
+                if (deleteModalId) {
+                  deleteResident(deleteModalId);
+                }
+                setDeleteModalId(null);
+              }}
+              onCancel={() => setDeleteModalId(null)}
+            />
+          </Box>
+        )}
+        <FloatingButton onClick={() => setIsPreviewVisible(!isPreviewVisible)}>
+          {!isPreviewVisible ? <IconEye /> : <IconSettings />}
+        </FloatingButton>
+      </>
+    );
+  }
+
   return (
     <SimpleGrid cols={2} spacing="xs">
       <Box p={5} style={{ overflowY: "scroll", height: "100vh" }}>
@@ -126,7 +177,7 @@ const Config = ({ residents, apartment }: Props) => {
         />
       </Box>
       <div className={ConfigClasses.previewScaleWrapper}>
-      <Preview residents={localResidents} apartment={apartment} />
+        <Preview residents={localResidents} apartment={apartment} />
       </div>
     </SimpleGrid>
   );

@@ -33,7 +33,7 @@ const ResidentForm: React.FC<ResidentFormProps> = ({ addResident }) => {
   };
 
   return (
-    <Flex justify="flex-start" align="flex-start" gap="md">
+    <Flex justify="flex-start" align="flex-start" gap="md" wrap="wrap" >
       <Box w={75}>
       <NumberInput
         label="Kerros"

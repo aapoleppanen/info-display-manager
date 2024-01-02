@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { TextInput, Button, Group } from '@mantine/core';
+import { TextInput, Button, Group, em, Flex } from '@mantine/core';
 import { ApartmentRow } from "../types";
+import { useMediaQuery } from '@mantine/hooks';
 
 type Props = {
   apartment: ApartmentRow;
@@ -34,7 +35,7 @@ const ApartmentConfig = ({ apartment }: Props) => {
   return (
     <div>
       <h3>Edit Apartment Details</h3>
-      <Group grow>
+     <Flex direction="column" gap="md" >
         <TextInput
           label="Description"
           value={editedApartment.description || ''}
@@ -51,7 +52,7 @@ const ApartmentConfig = ({ apartment }: Props) => {
           onChange={(e) => setEditedApartment({ ...editedApartment, address: e.target.value })}
         />
         <Button onClick={saveChanges}>Save Changes</Button>
-      </Group>
+      </Flex>
     </div>
   );
 };

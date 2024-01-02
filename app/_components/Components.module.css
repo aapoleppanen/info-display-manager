@@ -1,0 +1,5 @@
+.residentListButton {
+  @media (min-width: $mantine-breakpoint-sm) {
+    margin-left: auto;
+  }
+}
