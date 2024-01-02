@@ -1,9 +1,20 @@
+CREATE TABLE apartments (
+    id INT PRIMARY KEY,
+    description TEXT NOT NULL,
+    description_line_2 TEXT,
+    address VARCHAR(255) NOT NULL
+);
+
+ALTER TABLE residents
+ADD COLUMN apartment_id INT,
+ADD FOREIGN KEY (apartment_id) REFERENCES apartments(id);
+
 CREATE TABLE residents (
     id VARCHAR(15) PRIMARY KEY,
     resident_name VARCHAR(255) NOT NULL,
     house_number VARCHAR(255) NOT NULL,
     floor_number INTEGER NOT NULL,
-    apartment_id INTEGER NOT NULL
+    apartment_id INT,
 );
 
 CREATE TABLE "user" (

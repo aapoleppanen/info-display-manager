@@ -18,8 +18,8 @@ export async function GET(request: Request) {
   const resident = residents[0];
 
   // update fields present in request
-  const residentName = searchParams.get("residentName");
-  const houseNumber = searchParams.get("houseNumber");
+  const residentName = (searchParams.get('residentName') || '').replace(/\+/g, ' ');
+  const houseNumber = (searchParams.get('houseNumber') || '').replace(/\+/g, ' ');
   const floorNumber = searchParams.get("floorNumber");
 
   if (residentName) resident.resident_name = residentName;

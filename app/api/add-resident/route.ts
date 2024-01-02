@@ -4,9 +4,9 @@ import { revalidatePath } from 'next/cache'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const residentName = searchParams.get('residentName');
-  const houseNumber = searchParams.get('houseNumber');
-  const floorNumber = searchParams.get('floorNumber');
+  const residentName = (searchParams.get('residentName') || '').replace(/\+/g, ' ');
+  const houseNumber = (searchParams.get('houseNumber') || '').replace(/\+/g, ' ');
+  const floorNumber = searchParams.get('floorNumber') || '';
   const apartmentId = searchParams.get('apartmentId') || 1;
 
   try {

@@ -1,15 +1,16 @@
-import { sql } from '@vercel/postgres'
-import Config from './config/Config'
-import { ResidentRow } from './types'
 import { getPageSession } from '@/auth/lucia';
+import { Stack } from '@mantine/core';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { getResidents } from './db';
 
 export default async function Home() {
   const session = await getPageSession();
 	if (!session) redirect("/login");
 
-  const residents = await getResidents()
-
-  return <Config residents={residents as ResidentRow[]} />
+  return (
+    <Stack>
+      <Link href="/1">Apartment 1</Link>
+      <Link href="/2">Apartment 2</Link>
+      </Stack>
+  );
 }

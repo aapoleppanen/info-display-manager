@@ -6,6 +6,13 @@ export type ResidentRow = {
   apartment_id?: number;
 };
 
+export type ApartmentRow = {
+  id: number;
+  description: string;
+  description_line_2: string;
+  address: string;
+};
+
 export type ResidentInfo = Pick<ResidentRow, 'house_number' | 'resident_name' | 'floor_number'>;
 
 export type ApartmentConfig = {

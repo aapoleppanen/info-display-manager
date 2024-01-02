@@ -5,6 +5,7 @@
   justify-content: center;
   gap: 50px;
   height: 100vh;
+  overflow: hidden;
   width: 100%;
   /* background-color: #333333; */
   background: repeating-linear-gradient(
@@ -44,7 +45,15 @@
 .residentInfo {
   display: flex;
   width: 70%;
-  max-width: 350px;
+  max-width: 450px;
   justify-content: space-between;
   text-transform: uppercase;
+}
+
+.residentHousenumber {
+  white-space: nowrap;
+}
+
+.residentName {
+  text-align: right;
 }

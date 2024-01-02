@@ -6,13 +6,15 @@ import DeleteModal from "../_components/DeleteModal";
 import ResidentForm from "../_components/ResidentForm";
 import ResidentList from "../_components/ResidentList";
 import Preview from "../preview/Preview";
-import { ResidentInfo, ResidentRow } from "../types";
+import { ApartmentRow, ResidentInfo, ResidentRow } from "../types";
+import ApartmentConfig from "../_components/ApartmentConfig";
 
 type Props = {
   residents: ResidentRow[];
+  apartment: ApartmentRow;
 };
 
-const Config = ({ residents }: Props) => {
+const Config = ({ residents, apartment }: Props) => {
   const [localResidents, setLocalResidents] =
     useState<ResidentRow[]>(residents); // [ResidentRow
   const [deleteModalId, setDeleteModalId] = useState<number | null>(null);
@@ -24,6 +26,7 @@ const Config = ({ residents }: Props) => {
     url.searchParams.append("floorNumber", resident.floor_number.toString());
     url.searchParams.append("houseNumber", resident.house_number);
     url.searchParams.append("residentName", resident.resident_name);
+    url.searchParams.append("apartmentId", apartment.id.toString());
 
     const response = await fetch(url.href);
     const data = await response.json();
@@ -93,7 +96,10 @@ const Config = ({ residents }: Props) => {
 
   return (
     <SimpleGrid cols={2} spacing="xs">
-      <Box p={5}>
+      <Box p={5} style={{ overflowY: "scroll", height: "100vh" }}>
+        <ApartmentConfig apartment={apartment} />
+
+        <h3>Add residents</h3>
         <ResidentForm addResident={addResident} />
 
         {localResidents.length === 0 && <Box mt={10}>No residents found</Box>}
@@ -117,7 +123,7 @@ const Config = ({ residents }: Props) => {
           onCancel={() => setDeleteModalId(null)}
         />
       </Box>
-      <Preview residents={localResidents} />
+      <Preview residents={localResidents} apartment={apartment} />
     </SimpleGrid>
   );
 };
