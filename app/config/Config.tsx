@@ -106,20 +106,20 @@ const Config = ({ residents, apartment }: Props) => {
     return (
       <>
         {isPreviewVisible ? (
-          <div className={ConfigClasses.previewScaleWrapper}>
+          <div
+            className={`${ConfigClasses.previewScaleWrapper} ${ConfigClasses.previewScaleWrapperMobileFix}`}
+          >
             <Preview residents={localResidents} apartment={apartment} />
           </div>
         ) : (
-          <Box p={5} style={{ overflowY: "scroll", height: "100vh" }}>
+          <Box p={5}>
             <ApartmentConfig apartment={apartment} />
 
             <h2>Lisää asukas</h2>
             <ResidentForm addResident={addResident} />
             <Space h="md" />
 
-            {localResidents.length === 0 && (
-              <Box mt={10}>Ei asukkaita</Box>
-            )}
+            {localResidents.length === 0 && <Box mt={10}>Ei asukkaita</Box>}
 
             {localResidents.length > 0 && (
               <ResidentList

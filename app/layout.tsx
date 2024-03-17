@@ -6,8 +6,8 @@ import { theme } from "../theme";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Info Display Manager",
-  description: "Hello World!",
+  title: "Porrasnäyttö manageri",
+  description: "Hallinnoi porrasnäyttöjä helposti",
 };
 
 export default function RootLayout({

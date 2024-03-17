@@ -1,8 +1,12 @@
 .previewScaleWrapper {
   height: 100vh;
-  overflow: scroll;
+  overflow-y: scroll;
   > :first-child {
     height: auto;
     padding: 25px 0;
   }
+}
+
+.previewScaleWrapperMobileFix {
+  height: 100svh;
 }
