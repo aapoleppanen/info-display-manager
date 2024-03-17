@@ -10,26 +10,26 @@ const Page = async () => {
         <Container size="xs" p="lg">
             <Paper p="lg" shadow="xs">
                 <Title order={2} m="lg">
-                    Sign in
+                    Kirjaudu sisään
                 </Title>
                 <Form action="/api/login">
                     <TextInput
-                        label="Username"
+                        label="Käyttäjä"
                         name="username"
                         id="username"
-                        placeholder="Your username"
+                        placeholder="Sinun käyttäjänimi"
                         required
                     />
                     <PasswordInput
-                        label="Password"
+                        label="Salasana"
                         name="password"
                         id="password"
-                        placeholder="Your password"
+                        placeholder="Salasanasi"
                         required
                         mt="md"
                     />
                     <Group mt="md">
-                        <Button type="submit">Log in</Button>
+                        <Button type="submit">Kirjaudu</Button>
                     </Group>
                 </Form>
             </Paper>
