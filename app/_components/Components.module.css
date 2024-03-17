@@ -3,3 +3,10 @@
     margin-left: auto;
   }
 }
+
+.apartmentConfigTitle {
+  cursor: pointer;
+  &:hover {
+    background-color: var(--mantine-color-gray-1);
+  }
+}

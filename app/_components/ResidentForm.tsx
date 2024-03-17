@@ -46,21 +46,21 @@ const ResidentForm: React.FC<ResidentFormProps> = ({ addResident }) => {
       />
       </Box>
       <TextInput
-        label="House Number"
-        placeholder="House Number"
+        label="Talonumero"
+        placeholder="Talonumero"
         value={resident.house_number}
         onChange={(e) => setResident({ ...resident, house_number: e.target.value })}
         error={errors.houseNumber}
       />
       <TextInput
-        label="Resident Name"
-        placeholder="Resident Name"
+        label="Asukkaan nimi"
+        placeholder="Asukkaan nimi"
         value={resident.resident_name}
         onChange={(e) => setResident({ ...resident, resident_name: e.target.value })}
         error={errors.residentName}
       />
       <Button onClick={handleSubmit} mt={24}>
-        Add
+        Lisää asukas
       </Button>
     </Flex >
   );

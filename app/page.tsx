@@ -11,7 +11,7 @@ export default async function Home() {
     <Container size="xs" p="lg">
       <Paper p="lg" shadow="xs">
         <Title order={2} mb="lg">
-          Apartments
+          Näytöt
         </Title>
         <Stack>
           <Link href="/1">Kaartilaisenpolku 4 A</Link>

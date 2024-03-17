@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
-import { TextInput, Button, Group, em, Flex } from '@mantine/core';
+import React, { useState } from "react";
+import { TextInput, Button, Group, em, Flex, Collapse } from "@mantine/core";
 import { ApartmentRow } from "../types";
-import { useMediaQuery } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { IconChevronDown } from "@tabler/icons-react";
+import CssClasses from "./Components.module.css";
 
 type Props = {
   apartment: ApartmentRow;
 };
 
 const ApartmentConfig = ({ apartment }: Props) => {
-  const [editedApartment, setEditedApartment] = useState<Partial<ApartmentRow> & { id: number }>(apartment);
+  const [opened, { toggle }] = useDisclosure(false);
+  const [editedApartment, setEditedApartment] = useState<
+    Partial<ApartmentRow> & { id: number }
+  >(apartment);
 
-  const updateApartment = async (apartment: Partial<ApartmentRow> & { id: number }) => {
+  const updateApartment = async (
+    apartment: Partial<ApartmentRow> & { id: number }
+  ) => {
     const url = new URL("/api/edit-apartment", window.location.href);
     if (apartment.description)
       url.searchParams.append("description", apartment.description);
@@ -26,7 +33,7 @@ const ApartmentConfig = ({ apartment }: Props) => {
     if (data.error) {
       console.error(data.error);
     }
-  }
+  };
 
   const saveChanges = () => {
     updateApartment(editedApartment);
@@ -34,25 +41,54 @@ const ApartmentConfig = ({ apartment }: Props) => {
 
   return (
     <div>
-      <h3>Edit Apartment Details</h3>
-     <Flex direction="column" gap="md" >
-        <TextInput
-          label="Description"
-          value={editedApartment.description || ''}
-          onChange={(e) => setEditedApartment({ ...editedApartment, description: e.target.value })}
-        />
-        <TextInput
-          label="Description Line 2"
-          value={editedApartment.description_line_2 || ''}
-          onChange={(e) => setEditedApartment({ ...editedApartment, description_line_2: e.target.value })}
-        />
-        <TextInput
-          label="Address"
-          value={editedApartment.address || ''}
-          onChange={(e) => setEditedApartment({ ...editedApartment, address: e.target.value })}
-        />
-        <Button onClick={saveChanges}>Save Changes</Button>
+      <Flex
+        direction="row"
+        align="center"
+        justify="space-between"
+        onClick={toggle}
+         pr="md"
+         className={CssClasses.apartmentConfigTitle}
+      >
+        <h2>Muokkaa kerrostalon tietoja</h2>
+        <IconChevronDown />
       </Flex>
+      <Collapse in={opened}>
+        <Flex direction="column" gap="md">
+          <TextInput
+            label="Taloyhtiön nimi"
+            value={editedApartment.description || ""}
+            onChange={(e) =>
+              setEditedApartment({
+                ...editedApartment,
+                description: e.target.value,
+              })
+            }
+          />
+          <TextInput
+            label="Taloyhtiön nimi rivi 2 (vapaaehtoinen)"
+            value={editedApartment.description_line_2 || ""}
+            onChange={(e) =>
+              setEditedApartment({
+                ...editedApartment,
+                description_line_2: e.target.value,
+              })
+            }
+          />
+          <TextInput
+            label="Osoite"
+            value={editedApartment.address || ""}
+            onChange={(e) =>
+              setEditedApartment({
+                ...editedApartment,
+                address: e.target.value,
+              })
+            }
+          />
+          <Button onClick={saveChanges}>
+            Tallenna muutokset kerrostalon tietoihin
+          </Button>
+        </Flex>
+      </Collapse>
     </div>
   );
 };

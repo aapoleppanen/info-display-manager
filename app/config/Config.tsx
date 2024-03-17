@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, SimpleGrid, em } from "@mantine/core";
+import { Box, SimpleGrid, Space, em } from "@mantine/core";
 import { useState } from "react";
 import DeleteModal from "../_components/DeleteModal";
 import ResidentForm from "../_components/ResidentForm";
@@ -113,11 +113,12 @@ const Config = ({ residents, apartment }: Props) => {
           <Box p={5} style={{ overflowY: "scroll", height: "100vh" }}>
             <ApartmentConfig apartment={apartment} />
 
-            <h3>Add residents</h3>
+            <h2>Lisää asukas</h2>
             <ResidentForm addResident={addResident} />
+            <Space h="md" />
 
             {localResidents.length === 0 && (
-              <Box mt={10}>No residents found</Box>
+              <Box mt={10}>Ei asukkaita</Box>
             )}
 
             {localResidents.length > 0 && (
@@ -152,10 +153,11 @@ const Config = ({ residents, apartment }: Props) => {
       <Box p={5} style={{ overflowY: "scroll", height: "100vh" }}>
         <ApartmentConfig apartment={apartment} />
 
-        <h3>Add residents</h3>
+        <h2>Lisää asukas</h2>
         <ResidentForm addResident={addResident} />
+        <Space h="md" />
 
-        {localResidents.length === 0 && <Box mt={10}>No residents found</Box>}
+        {localResidents.length === 0 && <Box mt={10}>Ei asukkaita</Box>}
 
         {localResidents.length > 0 && (
           <ResidentList

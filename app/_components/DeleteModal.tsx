@@ -9,11 +9,11 @@ type DeleteModalProps = {
 
 const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onDeleteConfirm, onCancel }) => {
   return (
-    <Modal opened={isOpen} onClose={onCancel} title="Confirm Deletion">
-      <Text>Are you sure you want to delete this resident?</Text>
+    <Modal opened={isOpen} onClose={onCancel} title="Poista asukas">
+      <Text mb="lg">Oletko varma että haluat poistaa asukkaan?</Text>
       <Group>
-        <Button color="red" onClick={onDeleteConfirm}>Delete</Button>
-        <Button onClick={onCancel}>Cancel</Button>
+        <Button color="red" onClick={onDeleteConfirm}>Poista</Button>
+        <Button onClick={onCancel}>Peruuta</Button>
       </Group>
     </Modal>
   );

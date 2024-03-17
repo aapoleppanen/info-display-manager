@@ -40,22 +40,22 @@ const ResidentList: React.FC<Props> = ({
     } = {};
     const editId = residents.findIndex((r) => r.id === editedResident.id);
     if (!editedResident.floor_number || editedResident.floor_number < 1) {
-      newErrors.floor = "Please enter a valid floor number";
+      newErrors.floor = "Syötä kelvollinen kerrosnumero";
     }
     if (!editedResident.house_number?.trim()) {
-      newErrors.houseNumber = "House number cannot be empty";
+      newErrors.houseNumber = "Talonumero ei voi olla tyhjä";
     }
     if (!editedResident.resident_name?.trim()) {
-      newErrors.residentName = "Resident name cannot be empty";
+      newErrors.residentName = "Asukkaan nimi ei voi olla tyhjä";
     }
     if (
       editedResident.house_number === residents[editId!].house_number &&
       editedResident.resident_name === residents[editId!].resident_name &&
       editedResident.floor_number === residents[editId!].floor_number
     ) {
-      newErrors.houseNumber = "No changes detected";
-      newErrors.residentName = "No changes detected";
-      newErrors.floor = "No changes detected";
+      newErrors.houseNumber = "Ei muutoksia havaittu";
+      newErrors.residentName = "Ei muutoksia havaittu";
+      newErrors.floor = "Ei muutoksia havaittu";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -80,13 +80,14 @@ const ResidentList: React.FC<Props> = ({
 
   return (
     <>
+    <h2>Muokkaa asukkaita</h2>
       {Object.entries(groupedResidents).map(([floor, residentsOnFloor]) => (
         <div key={floor}>
-          <h3>Floor {floor}</h3>
+          <h3>Kerros {floor}</h3>
           {residentsOnFloor.map((resident) => (
             <Flex
               direction={{ base: "column", sm: "row" }}
-              align={{ sm: "center", md: "end" }}
+              align={{ sm: "center", md: "start" }}
               justify={{ md: "start" }}
               gap="xs"
               key={resident.id}
@@ -102,8 +103,8 @@ const ResidentList: React.FC<Props> = ({
                         house_number: e.target.value,
                       })
                     }
-                    placeholder="House Number"
-                    label="House Number"
+                    placeholder="Talonumero"
+                    label="Talonumero"
                     size="xs"
                     error={errors.houseNumber}
                   />
@@ -115,8 +116,8 @@ const ResidentList: React.FC<Props> = ({
                         resident_name: e.target.value,
                       })
                     }
-                    placeholder="Resident Name"
-                    label="Resident Name"
+                    placeholder="Asukkaan nimi"
+                    label="Asukkaan nimi"
                     size="xs"
                     error={errors.residentName}
                   />
@@ -128,8 +129,8 @@ const ResidentList: React.FC<Props> = ({
                         floor_number: Number(value),
                       })
                     }
-                    placeholder="Floor Number"
-                    label="Floor Number"
+                    placeholder="Kerros"
+                    label="Kerros"
                     size="xs"
                     error={errors.floor}
                     min={1}
@@ -139,31 +140,32 @@ const ResidentList: React.FC<Props> = ({
                     size="xs"
                     onClick={saveEdit}
                     className={CssClasses.residentListButton}
+                    mt={24}
                   >
-                    Save
+                    Tallenna
                   </Button>
-                  <Button size="xs" onClick={cancelEdit}>
-                    Cancel
+                  <Button size="xs" onClick={cancelEdit} mt={24}>
+                    Peruuta
                   </Button>
                 </>
               ) : (
                 <>
                   <Box>
-                    {`House Number: ${resident.house_number}, Resident: ${resident.resident_name}`}
+                    {`Talonumero: ${resident.house_number}, Asukas: ${resident.resident_name}`}
                   </Box>
                   <Button
                     size="xs"
                     onClick={() => startEdit(resident)}
                     className={CssClasses.residentListButton}
                   >
-                    Edit
+                    Muokkaa
                   </Button>
                   <Button
                     size="xs"
                     color="red"
                     onClick={() => deleteResident(resident.id)}
                   >
-                    Delete
+                    Poista
                   </Button>
                 </>
               )}
