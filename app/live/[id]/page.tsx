@@ -1,44 +1,38 @@
-import { getApartment, getResidents } from "@/app/db";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Preview from "@/app/preview/Preview";
-import { ResidentRow } from "@/app/types";
-import Script from "next/script";
+import { ApartmentRow, ResidentRow } from "@/app/types";
 
-export const dynamic = "force-static";
-export const revalidate = 60 * 60 * 24;
+export default function Live({ params }: { params: { id: string } }) {
+  const [residents, setResidents] = useState<ResidentRow[]>([]);
+  const [apartment, setApartment] = useState<ApartmentRow>({
+    description: "",
+    description_line_2: "",
+    address: "",
+    id: Number(params.id),
+  });
 
-export function generateStaticParams() {
-  return [{ id: "1" }, { id: "2" }];
-}
+  useEffect(() => {
+    async function fetchData() {
+      const residentsUrl = new URL("/api/get-residents", window.location.href);
+      residentsUrl.searchParams.append("id", params.id);
+      const residentsResponse = await fetch(residentsUrl.href);
+      const apartmentUrl = new URL("/api/get-apartment", window.location.href);
+      apartmentUrl.searchParams.append("id", params.id);
+      const apartmentResponse = await fetch(apartmentUrl.href);
+      const residentsData = await residentsResponse.json();
+      const apartmentData = await apartmentResponse.json();
 
-export default async function Live({ params }: { params: { id: string } }) {
-  const residents = await getResidents(params.id);
-  const apartment = await getApartment(params.id);
+      setResidents(residentsData);
+      setApartment(apartmentData);
+    }
 
-  return (
-    <>
-      <Script strategy="beforeInteractive" id="reload-script">{`
-        const calculateReloadTime = () => {
-          const now = new Date();
-          const tomorrow = new Date(now);
-          tomorrow.setDate(tomorrow.getDate() + 1);
-          tomorrow.setHours(3, 0, 0, 0); // Set to reload at 3 AM
-          return tomorrow.getTime() - now.getTime();
-        };
+    fetchData(); // Fetch data on component mount
 
-        const timeUntil2am = calculateReloadTime();
-        localStorage.setItem('reloadTime', new Date().getTime() + timeUntil2am);
+    const interval = setInterval(fetchData, 10800000); // Refresh every 3 hours
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [params.id]); // Re-run when the id changes
 
-        setTimeout(() => window.location.reload(), timeUntil2am - 7200000); // 1AM
-
-        setInterval(() => {
-          const reloadTime = parseInt(localStorage.getItem('reloadTime'), 10);
-          const now = new Date().getTime() + 300000;
-          if (now >= reloadTime) {
-            window.location.reload();
-          }
-        }, 3600000); // Check every hour (3600000 ms)
-      `}</Script>
-      <Preview residents={residents as ResidentRow[]} apartment={apartment} />
-    </>
-  );
+  return <Preview residents={residents} apartment={apartment} />;
 }
